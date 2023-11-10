@@ -12,6 +12,8 @@ npm install --save-dev electron
 ```
 
 # Features
-- Plays Bad Apple in a window
-- Window is always on top
+- Launches new windows that play a video
+- Videos have the same width
+- Video window is always on top
+- Video rescales with window (to an extent)
 - 
