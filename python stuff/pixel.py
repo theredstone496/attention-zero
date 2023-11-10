@@ -5,11 +5,13 @@ Created on Fri Nov 10 15:14:17 2023
 @author: User
 
 """
-#example use: python pixel.py --vidPath video.mp4 --percentile 70 --vid2height 480 --vid2width 360 --attentionSpan 300
+#example use: python pixel.py --vidPath "attention-zero/video/videos/Renai Circulation.mp4" --percentile 70 --vid2height 480 --vid2width 360 --attentionSpan 300
 import math
 import numpy as np
 import cv2
 import argparse
+import sys
+np.set_printoptions(threshold=sys.maxsize)
 def imagediff(image, previmage):
     total = 0
     image = image.astype("int64")
@@ -52,6 +54,7 @@ def process(vidPath, percent, vid2height, vid2width, attentionSpan):
             stopped = False
             vidcap.set(cv2.CAP_PROP_POS_FRAMES, i - 1)
             success, image = vidcap.read()
+            orgshape = image.shape
             image = cv2.resize(image, (image.shape[0] // 10, image.shape[1] // 10))
             newimg1 = np.square(conv2d(image[:, :, 0], np.array([[0, 1, 0], [1, -4, 1], [0, 1, 0]])))
             newimg2 = np.square(conv2d(image[:, :, 1], np.array([[0, 1, 0], [1, -4, 1], [0, 1, 0]])))
@@ -59,9 +62,9 @@ def process(vidPath, percent, vid2height, vid2width, attentionSpan):
             newimg = newimg1 + newimg2 + newimg3
             newimg4 = conv2d(newimg, np.ones([vid2height // 10, vid2width // 10]))
             amin = newimg4.argmin()
-            idx = (amin // newimg4.shape[0], amin % newimg4.shape[0])
+            idx = (amin // newimg4.shape[1], amin % newimg4.shape[1])
             tot = newimg4.shape
-            file.write(str(i) + "g" + "(" + str(int(0.5 * vid2width + (previmg.shape[1] - vid2width) * idx[1] / tot[1])) + "," + str(int(0.5 * vid2height + (previmg.shape[0] - vid2width) * idx[0] / tot[0])) + ")" + " ")
+            file.write(str(i) + "g" + "(" + str(int(0.5 * vid2width + (orgshape[1] - vid2width) * idx[1] / (tot[1]-1))) + "," + str(int(0.5 * vid2height + (orgshape[0] - vid2height) * idx[0] / (tot[0]-1))) + ")" + " ")
             lastcount = i
     file.close()
 if __name__=="__main__":
