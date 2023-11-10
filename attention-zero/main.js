@@ -3,6 +3,8 @@ const { app, BrowserWindow, screen } = require('electron');
 const path = require('path');
 const ffmpeg = require('fluent-ffmpeg');
 
+require('@electron/remote/main').initialize()
+
 //ipc
 const { ipcMain } = require('electron')
 ipcMain.on('asynchronous-message', (event, arg) => {
@@ -34,14 +36,19 @@ ipcMain.on('asynchronous-message', (event, arg) => {
                 maximizable: false,
                 alwaysOnTop: true,
                 webPreferences: {
-                    nodeIntegration: true
+                    preload: path.join(__dirname, 'video_preload.js'),
+                    nodeIntegration: true,
+                    contextIsolation: false,
+                    enableRemoteModule: true
                 },
                 x: x,
                 y: y
             });
-
+            require('@electron/remote/main').enable(newWindow.webContents)
             newWindow.loadFile(`video/${arg}.html`)
-            newWindow.setMenu(null)
+            // newWindow.setMenu(null)
+
+
             const displays = screen.getAllDisplays()
             const externalDisplay = displays.find((display) => {
                 return display.bounds.x !== 0 || display.bounds.y !== 0
@@ -57,6 +64,8 @@ const createWindow = () => {
         height: 600,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
+            nodeIntegration: true,
+            enableRemoteModule: true,
         },
 
     });
