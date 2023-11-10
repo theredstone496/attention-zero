@@ -5,6 +5,8 @@ Adds subway surfers or other attention-catching content to a lecture to maintain
 # Install
 
 ```
-cd my-electron-app
+cd attention-zero
 npm install --save-dev electron
 ```
+
+
