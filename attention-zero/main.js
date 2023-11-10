@@ -2,13 +2,14 @@ const { app, BrowserWindow } = require('electron')
 
 const createWindow = () => {
     const win = new BrowserWindow({
-      width: 800,
-      height: 600
+      width: 480,
+      height: 361,
+      frame: false
     })
   
     win.loadFile('index.html')
     win.setAlwaysOnTop(true)
-    win.setMenu(null)
+    // win.setMenu(null)
 }
 
 app.whenReady().then(() => {
