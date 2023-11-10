@@ -8,6 +8,7 @@ const createWindow = () => {
   
     win.loadFile('index.html')
     win.setAlwaysOnTop(true)
+    win.setMenu(null)
 }
 
 app.whenReady().then(() => {
