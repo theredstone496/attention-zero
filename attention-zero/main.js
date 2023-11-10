@@ -1,19 +1,19 @@
 const { app, BrowserWindow } = require('electron')
 
-const createWindow = () => {
+const createWindow = (file) => {
     const win = new BrowserWindow({
       width: 480,
-      height: 361,
-      frame: false
+      height: 397,
+      frame: true
     })
   
-    win.loadFile('index.html')
+    win.loadFile(file)
     win.setAlwaysOnTop(true)
-    // win.setMenu(null)
+    win.setMenu(null)
 }
 
 app.whenReady().then(() => {
-    createWindow()
+    createWindow('index.html')
 
     app.on('activate', () => {
         // On macOS it's common to re-create a window in the app when the
