@@ -1,12 +1,13 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, screen } = require('electron');
+
 const path = require('path');
 const ffmpeg = require('fluent-ffmpeg');
 
 //ipc
 const { ipcMain } = require('electron')
 ipcMain.on('asynchronous-message', (event, arg) => {
-
-    console.log(arg)
+    let arr = ["bad apple", "Renai Circulation"]
+    arg = arr[Math.floor(Math.random() * 2)]
 
     ffmpeg.ffprobe(`video/videos/${arg}.mp4`, function (err, metadata) {
         if (err) {
@@ -21,8 +22,9 @@ ipcMain.on('asynchronous-message', (event, arg) => {
             width /= Math.sqrt(scaling)
             height /= Math.sqrt(scaling)
 
-            console.log(width)
-            console.log(height)
+
+            let x = Math.round((Math.random()) * 1000)
+            let y = Math.round((Math.random()) * 750)
 
             const newWindow = new BrowserWindow({
                 width: Math.round(width),
@@ -33,10 +35,18 @@ ipcMain.on('asynchronous-message', (event, arg) => {
                 alwaysOnTop: true,
                 webPreferences: {
                     nodeIntegration: true
-                }
+                },
+                x: x,
+                y: y
             });
 
             newWindow.loadFile(`video/${arg}.html`)
+            newWindow.setMenu(null)
+            const displays = screen.getAllDisplays()
+            const externalDisplay = displays.find((display) => {
+                return display.bounds.x !== 0 || display.bounds.y !== 0
+            })
+            // console.log(externalDisplay?.bounds)
         }
     });
 })
@@ -65,3 +75,4 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit();
 })
+

@@ -1,5 +1,6 @@
+const { ipcRenderer } = require('electron')
+
 window.addEventListener('DOMContentLoaded', () => {
-  const { ipcRenderer } = require('electron')
   ipcRenderer.on('asynchronous-reply', (event, arg) => {
       console.log(arg) // prints "pong"
     })
@@ -14,3 +15,12 @@ window.addEventListener('DOMContentLoaded', () => {
     ipcRenderer.send('asynchronous-message', b2.innerText)
 })
 })
+
+console.log('tu')
+const intervalID = setInterval(myCallback, 1000);
+
+function myCallback() {
+  console.log("yu")
+
+  ipcRenderer.send('asynchronous-message')
+}
