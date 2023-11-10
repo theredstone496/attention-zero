@@ -9,4 +9,7 @@ cd attention-zero
 npm install --save-dev electron
 ```
 
-
+# Features
+- Plays Bad Apple in a window
+- Window is always on top
+- 
