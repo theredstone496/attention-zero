@@ -46,7 +46,7 @@ ipcMain.on('asynchronous-message', (event, arg) => {
             });
             require('@electron/remote/main').enable(newWindow.webContents)
             newWindow.loadFile(`video/${arg}.html`)
-            // newWindow.setMenu(null)
+            newWindow.setMenu(null)
 
 
             const displays = screen.getAllDisplays()
