@@ -8,7 +8,7 @@ require('@electron/remote/main').initialize()
 //ipc
 const { ipcMain } = require('electron')
 ipcMain.on('asynchronous-message', (event, arg) => {
-    let arr = ["bad apple", "Renai Circulation"]
+    let arr = ["SS1", "SS2", "SS3", "SS4"]
     arg = arr[Math.floor(Math.random() * 2)]
 
     ffmpeg.ffprobe(`video/videos/${arg}.mp4`, function (err, metadata) {
