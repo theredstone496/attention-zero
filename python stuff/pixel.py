@@ -5,7 +5,7 @@ Created on Fri Nov 10 15:14:17 2023
 @author: User
 
 """
-#example use: python pixel.py --vidPath "C:\Users\Tyler Foo\Documents\nushhack\attention-zero\python stuff\ricardo.mp4" --percentile 70 --vid2height 540 --vid2width 960 --attentionSpan 300
+#example use: python pixel.py --vidPath "ricardo.mp4" --percentile 70 --vid2height 540 --vid2width 960 --attentionSpan 300
 import math
 import numpy as np
 import cv2
