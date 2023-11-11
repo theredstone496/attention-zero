@@ -11,13 +11,22 @@ window.addEventListener('DOMContentLoaded', () => {
   const b2 = document.getElementById('b2');
 
   b1.addEventListener('click', () => {
+    const value = document.querySelector('input[name="mode"]:checked')?.value;
+    let split = 'False';
+    if (value == "Split-screen") {
+      split = 'True';
+    }
+    else {
+      split = 'False';
+    }
     dialog.showOpenDialog({ properties: ['openFile'] }).then((response) => {
       if (response.canceled) return console.log("augh")
       const filePath = response.filePaths
       const out = document.getElementById("out")
       console.log(filePath[0])
+      const extrafile = Math.floor(Math.random() * 4) + 1
 
-      const python = spawn("py", ['../python stuff/pixel.py', '--vidPath', '../attention-zero/video/videos/Renai Circulation.mp4', '--percentile', '30', '--vid2height', '480', '--vid2width', '360', '--attentionSpan', '300'])
+      const python = spawn("py", ['../python stuff/videoedit.py', '--mainvid', filePath[0], '--extravid', '../attention-zero/video/videos/SS1.mp4,../attention-zero/video/videos/SS2.mp4,../attention-zero/video/videos/SS3.mp4,../attention-zero/video/videos/SS4.mp4', '--output', 'richard.mp4', '--percentile', '40', '--attentionSpan', '300', '--splitScreen', split])
 
       out.innerText += "it is the working"
 
