@@ -49,7 +49,7 @@ def process(vidPath, vid2height, vid2width, percent, attentionSpan):
     for i in range(len(diffs)):
         if (not stopped) and diffs[i] >= perdiff and i >= lastcount + 300:
             stopped = True
-            sys.stdout.write(str(i) + "s" + " ")
+            output.append(str(i) + "s ")
             lastcount = i
         if (stopped) and diffs[i] < perdiff and i >= lastcount + attentionSpan:
             stopped = False
@@ -65,7 +65,7 @@ def process(vidPath, vid2height, vid2width, percent, attentionSpan):
             amin = newimg4.argmin()
             idx = (amin // newimg4.shape[1], amin % newimg4.shape[1])
             tot = newimg4.shape
-            output.append(str(i) + "g" + "(" + str(int(0.5 * vid2width + (orgshape[1] - vid2width) * idx[1] / (tot[1]-1))) + "," + str(int(0.5 * vid2height + (orgshape[0] - vid2height) * idx[0] / (tot[0]-1))) + ")" + " ")
+            output.append(str(i) + "g" + "(" + str(int(0.5 * vid2width + (orgshape[1] - vid2width) * idx[1] / (tot[1]-1))) + "," + str(int(0.5 * vid2height + (orgshape[0] - vid2height) * idx[0] / (tot[0]-1))) + ") ")
             lastcount = i
     return ''.join(output)
     #file.close()
@@ -78,4 +78,4 @@ if __name__=="__main__":
     a.add_argument("--attentionSpan", help="time in between subway surfers")
     args = a.parse_args()
     print(args)
-    process(args.vidPath, int(args.vid2height), int(args.vid2width), int(args.percentile), int(args.attentionSpan))
+    print(process(args.vidPath, int(args.vid2height), int(args.vid2width), int(args.percentile), int(args.attentionSpan)))
