@@ -38,22 +38,23 @@ def edit(mainvid, extravid, output, percentile, attentionSpan):
         cliplist.append(subclip2)
 
     video = CompositeVideoClip(cliplist).without_audio()
-    cliplist = [video]
+
+    video.write_videofile(output)
+def splitscreen(mainvid, extravid, output):
+    #continuously play  asdsad
+    clip1 = VideoFileClip(mainvid).without_audio()
+    clip2 = VideoFileClip(extravid).without_audio().resize(0.75)
     start = 0
     stop = clip1.duration
+    cliplist = [clip1]
     while(stop - start > clip2.duration):
         subclipx = clip2.subclip(0, clip2.duration)\
                 .set_start(start)\
                 .set_position(clip1.w, 0)
         cliplist.append(subclipx)
         start += clip2.duration
-    video.write_videofile(output)
-def splitscreen(mainvid, extravid, output):
-    #continuously play
-    clip1 = VideoFileClip(mainvid).without_audio()
-    clip2 = VideoFileClip(extravid).without_audio().resize(0.75)
-    cliplist = [[clip1], [clip2]]
-    video = CompositeVideoClip.clips_array(cliplist)
+
+    video = CompositeVideoClip(cliplist, size=(clip1.h, clip2.w + clip1.w))
     video.write_videofile(output)
 if __name__=="__main__":
     a = argparse.ArgumentParser()
