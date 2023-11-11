@@ -33,14 +33,14 @@ def process(vidPath, percent, vid2height, vid2width, attentionSpan):
     diffs = []
     previmg = image
     while success:
-      success,image = vidcap.read()
-      if not success:
-          break
-      image = cv2.resize(image, (400, 400))
-      diff = imagediff(image, previmg)
-      diffs.append(diff)
-      previmage = image
-      count += 1
+        success,image = vidcap.read()
+        if not success:
+            break
+        image = cv2.resize(image, (400, 400))
+        diff = imagediff(image, previmg)
+        diffs.append(diff)
+        previmage = image
+        count += 1
     perdiff = np.percentile(diffs, percent)
     stopped = True
     #file = open("startstop.txt", "w")
