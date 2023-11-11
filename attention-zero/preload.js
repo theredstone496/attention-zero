@@ -28,19 +28,19 @@ window.addEventListener('DOMContentLoaded', () => {
 
       const python = spawn("py", ['../python stuff/videoedit.py', '--mainvid', filePath[0], '--extravid', '../attention-zero/video/videos/SS1.mp4,../attention-zero/video/videos/SS2.mp4,../attention-zero/video/videos/SS3.mp4,../attention-zero/video/videos/SS4.mp4', '--output', 'richard.mp4', '--percentile', '40', '--attentionSpan', '300', '--splitScreen', split])
 
-      out.innerText += "it is the working"
+      // out.innerText += "it is the working"
 
-      python.stdout.on('data', (data) => {
-        out.innerText += `stdout: ${data}`
-      });
+      // python.stdout.on('data', (data) => {
+      //   out.innerText += `stdout: ${data}`
+      // });
 
-      python.stderr.on('data', (data) => {
-        out.innerText += `stderr: ${data}`
-      });
+      // python.stderr.on('data', (data) => {
+      //   out.innerText += `stderr: ${data}`
+      // });
 
-      python.on('close', (code) => {
-        out.innerText += `child process exited with code ${code}`
-      });
+      // python.on('close', (code) => {
+      //   out.innerText += `child process exited with code ${code}`
+      // });
     })
   })
   b2.addEventListener('click', () => {
