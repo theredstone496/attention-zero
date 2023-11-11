@@ -46,14 +46,14 @@ ipcMain.on('asynchronous-message', (event, arg) => {
             });
             require('@electron/remote/main').enable(newWindow.webContents)
             newWindow.loadFile(`video/${arg}.html`)
-            newWindow.setMenu(null)
+            // newWindow.setMenu(null)
 
 
             const displays = screen.getAllDisplays()
             const externalDisplay = displays.find((display) => {
                 return display.bounds.x !== 0 || display.bounds.y !== 0
             })
-            console.log(externalDisplay)
+            // console.log(externalDisplay)
             // console.log(externalDisplay?.bounds)
         }
     });
@@ -70,7 +70,7 @@ const createWindow = () => {
         },
 
     });
-
+    require("@electron/remote/main").enable(win.webContents)
     win.loadFile('index.html');
 }
 
