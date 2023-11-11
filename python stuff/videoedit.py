@@ -2,18 +2,20 @@ import argparse
 import re
 from moviepy.editor import *
 
-# example use: python videoedit.py --mainvid "ricardo.mp4" --extravid "..\subway-surfers\part0new.avi" --output "richard.mp4" --splits "startstop.txt"
+from pixel import process
 
-def edit(mainvid, extravid, output, splits):
+# example use: python videoedit.py --mainvid "ricardo.mp4" --extravid "..\subway-surfers\part0new.avi" --output "richard.mp4"
+
+def edit(mainvid, extravid, output, percentile, attentionSpan):
     # clip1 is main, clip2 is distraction
     clip1 = VideoFileClip(mainvid).without_audio()
     clip2 = VideoFileClip(extravid).without_audio().resize(0.75)
 
+    splits = process(mainvid, clip2.h, clip2.w, percentile, attentionSpan).split('s ')
     cliplist = [clip1]
-    startstop = open(splits, 'r').read().split('s ')
     fps2 = clip2.fps
 
-    for s in startstop:
+    for s in splits:
         data = re.split(r'g\(|,|\) ', s)
 
         start = int(data[0])/fps2
@@ -29,12 +31,20 @@ def edit(mainvid, extravid, output, splits):
 
     video = CompositeVideoClip(cliplist).without_audio()
     video.write_videofile(output)
-
+def splitscreen(mainvid, extravid, output):
+    #continuously play
+    clip1 = VideoFileClip(mainvid).without_audio()
+    clip2 = VideoFileClip(extravid).without_audio().resize(0.75)
+    cliplist = [[clip1], [clip2]]
+    video = CompositeVideoClip.clips_array(cliplist)
+    video.write_videofile(output)
 if __name__=="__main__":
     a = argparse.ArgumentParser()
     a.add_argument("--mainvid", help="path to main video")
     a.add_argument("--extravid", help="path to distraction video")
     a.add_argument("--output", help="path of output video")
-    a.add_argument("--splits", help="splits txt file")
+    a.add_argument("--percentile", default=70, help="how much of the video should be subway surfers")
+    a.add_argument("--attentionSpan", default=300, help="time in between subway surfers")
+    a.add_argument("--splitScreen", type=bool, default=False, help="true to do split screen, false to do on top")
     args = a.parse_args()
-    edit(args.mainvid, args.extravid, args.output, args.splits)
+    edit(args.mainvid, args.extravid, args.output, args.percentile, args.attentionSpan)

@@ -5,7 +5,7 @@ Created on Fri Nov 10 15:14:17 2023
 @author: User
 
 """
-#example use: python pixel.py --vidPath "ricardo.mp4" --percentile 70 --vid2height 540 --vid2width 960 --attentionSpan 300
+#example use: python pixel.py --vidPath "ricardo.mp4" --vid2height 540 --vid2width 960 --percentile 70 --attentionSpan 300
 import math
 import numpy as np
 import cv2
@@ -25,7 +25,7 @@ def conv2d(a, f):
     strd = np.lib.stride_tricks.as_strided
     subM = strd(a, shape = s, strides = a.strides * 2)
     return np.einsum('ij,ijkl->kl', f, subM)
-def process(vidPath, percent, vid2height, vid2width, attentionSpan):
+def process(vidPath, vid2height, vid2width, percent, attentionSpan):
     vidcap = cv2.VideoCapture(vidPath)
     success,image = vidcap.read()
     image = cv2.resize(image, (400, 400))
@@ -44,11 +44,12 @@ def process(vidPath, percent, vid2height, vid2width, attentionSpan):
     perdiff = np.percentile(diffs, percent)
     stopped = True
     #file = open("startstop.txt", "w")
+    output = []
     lastcount = 0
     for i in range(len(diffs)):
         if (not stopped) and diffs[i] >= perdiff and i >= lastcount + 300:
             stopped = True
-            sys.stdout.write(str(i) + "s" + " ")
+            output.append(str(i) + "s ")
             lastcount = i
         if (stopped) and diffs[i] < perdiff and i >= lastcount + attentionSpan:
             stopped = False
@@ -64,16 +65,17 @@ def process(vidPath, percent, vid2height, vid2width, attentionSpan):
             amin = newimg4.argmin()
             idx = (amin // newimg4.shape[1], amin % newimg4.shape[1])
             tot = newimg4.shape
-            sys.stdout.write(str(i) + "g" + "(" + str(int(0.5 * vid2width + (orgshape[1] - vid2width) * idx[1] / (tot[1]-1))) + "," + str(int(0.5 * vid2height + (orgshape[0] - vid2height) * idx[0] / (tot[0]-1))) + ")" + " ")
+            output.append(str(i) + "g" + "(" + str(int(0.5 * vid2width + (orgshape[1] - vid2width) * idx[1] / (tot[1]-1))) + "," + str(int(0.5 * vid2height + (orgshape[0] - vid2height) * idx[0] / (tot[0]-1))) + ") ")
             lastcount = i
+    return ''.join(output)
     #file.close()
 if __name__=="__main__":
     a = argparse.ArgumentParser()
     a.add_argument("--vidPath", help="path to video")
-    a.add_argument("--percentile", help="how much of the video should be subway surfers")
     a.add_argument("--vid2height", help="target height of subway surfers")
     a.add_argument("--vid2width", help="target width of subway surfers")
+    a.add_argument("--percentile", help="how much of the video should be subway surfers")
     a.add_argument("--attentionSpan", help="time in between subway surfers")
     args = a.parse_args()
     print(args)
-    process(args.vidPath, int(args.percentile), int(args.vid2height), int(args.vid2width), int(args.attentionSpan))
+    print(process(args.vidPath, int(args.vid2height), int(args.vid2width), int(args.percentile), int(args.attentionSpan)))
