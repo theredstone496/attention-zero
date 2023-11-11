@@ -5,7 +5,7 @@ Created on Fri Nov 10 15:14:17 2023
 @author: User
 
 """
-#example use: python pixel.py --vidPath "attention-zero/video/videos/Renai Circulation.mp4" --percentile 70 --vid2height 480 --vid2width 360 --attentionSpan 300
+#example use: python pixel.py --vidPath "ricardo.mp4" --percentile 70 --vid2height 540 --vid2width 960 --attentionSpan 300
 import math
 import numpy as np
 import cv2
@@ -33,14 +33,14 @@ def process(vidPath, percent, vid2height, vid2width, attentionSpan):
     diffs = []
     previmg = image
     while success:
-      success,image = vidcap.read()
-      if not success:
-          break
-      image = cv2.resize(image, (400, 400))
-      diff = imagediff(image, previmg)
-      diffs.append(diff)
-      previmage = image
-      count += 1
+        success,image = vidcap.read()
+        if not success:
+            break
+        image = cv2.resize(image, (400, 400))
+        diff = imagediff(image, previmg)
+        diffs.append(diff)
+        previmage = image
+        count += 1
     perdiff = np.percentile(diffs, percent)
     stopped = True
     #file = open("startstop.txt", "w")
