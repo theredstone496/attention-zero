@@ -9,7 +9,7 @@ require('@electron/remote/main').initialize()
 const { ipcMain } = require('electron')
 ipcMain.on('asynchronous-message', (event, arg) => {
     let arr = ["SS1", "SS2", "SS3", "SS4"]
-    arg = arr[Math.floor(Math.random() * 2)]
+    arg = arr[Math.floor(Math.random() * 4)]
 
     ffmpeg.ffprobe(`video/videos/${arg}.mp4`, function (err, metadata) {
         if (err) {
@@ -46,7 +46,7 @@ ipcMain.on('asynchronous-message', (event, arg) => {
             });
             require('@electron/remote/main').enable(newWindow.webContents)
             newWindow.loadFile(`video/${arg}.html`)
-            // newWindow.setMenu(null)
+            newWindow.setMenu(null)
 
 
             const displays = screen.getAllDisplays()
