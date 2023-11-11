@@ -17,7 +17,7 @@ window.addEventListener('DOMContentLoaded', () => {
       const out = document.getElementById("out")
       console.log(filePath[0])
 
-      const python = spawn("py", ['../python stuff/pixel.py', '--vidPath', '../attention-zero/video/videos/Renai Circulation.mp4', '--percentile', '70', '--vid2height', '480', '--vid2width', '360', '--attentionSpan', '300'])
+      const python = spawn("py", ['../python stuff/pixel.py', '--vidPath', '../attention-zero/video/videos/Renai Circulation.mp4', '--percentile', '30', '--vid2height', '480', '--vid2width', '360', '--attentionSpan', '300'])
 
       out.innerText += "it is the working"
 

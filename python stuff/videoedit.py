@@ -21,6 +21,14 @@ def edit(mainvid, extravid, output, percentile, attentionSpan):
         start = int(data[0])/fps2
         if (data[3] == ''):
             stop = clip1.duration
+        elif (int(data[3])/fps2 - start > clip2.duration):
+            stop = int(data[3])/fps2
+            while(stop - start > clip2.duration):
+                subclipx = clip2.subclip(0, clip2.duration)\
+                        .set_start(start)\
+                        .set_position((int(data[1]) - clip2.w//2, int(data[2]) - clip2.h//2))
+                cliplist.append(subclipx)
+                start += clip2.duration
         else:
             stop = int(data[3])/fps2
 
@@ -30,6 +38,15 @@ def edit(mainvid, extravid, output, percentile, attentionSpan):
         cliplist.append(subclip2)
 
     video = CompositeVideoClip(cliplist).without_audio()
+    cliplist = [video]
+    start = 0
+    stop = clip1.duration
+    while(stop - start > clip2.duration):
+        subclipx = clip2.subclip(0, clip2.duration)\
+                .set_start(start)\
+                .set_position(clip1.w, 0)
+        cliplist.append(subclipx)
+        start += clip2.duration
     video.write_videofile(output)
 def splitscreen(mainvid, extravid, output):
     #continuously play
@@ -47,4 +64,7 @@ if __name__=="__main__":
     a.add_argument("--attentionSpan", default=300, help="time in between subway surfers")
     a.add_argument("--splitScreen", type=bool, default=False, help="true to do split screen, false to do on top")
     args = a.parse_args()
-    edit(args.mainvid, args.extravid, args.output, args.percentile, args.attentionSpan)
+    if (args.splitScreen):
+        splitscreen(args.mainvid, args.extravid, args.output)
+    else:
+        edit(args.mainvid, args.extravid, args.output, args.percentile, args.attentionSpan)
