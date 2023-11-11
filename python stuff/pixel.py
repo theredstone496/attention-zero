@@ -43,12 +43,12 @@ def process(vidPath, percent, vid2height, vid2width, attentionSpan):
       count += 1
     perdiff = np.percentile(diffs, percent)
     stopped = True
-    file = open("startstop.txt", "w")
+    #file = open("startstop.txt", "w")
     lastcount = 0
     for i in range(len(diffs)):
         if (not stopped) and diffs[i] >= perdiff and i >= lastcount + 300:
             stopped = True
-            file.write(str(i) + "s" + " ")
+            sys.stdout.write(str(i) + "s" + " ")
             lastcount = i
         if (stopped) and diffs[i] < perdiff and i >= lastcount + attentionSpan:
             stopped = False
@@ -64,9 +64,9 @@ def process(vidPath, percent, vid2height, vid2width, attentionSpan):
             amin = newimg4.argmin()
             idx = (amin // newimg4.shape[1], amin % newimg4.shape[1])
             tot = newimg4.shape
-            file.write(str(i) + "g" + "(" + str(int(0.5 * vid2width + (orgshape[1] - vid2width) * idx[1] / (tot[1]-1))) + "," + str(int(0.5 * vid2height + (orgshape[0] - vid2height) * idx[0] / (tot[0]-1))) + ")" + " ")
+            sys.stdout.write(str(i) + "g" + "(" + str(int(0.5 * vid2width + (orgshape[1] - vid2width) * idx[1] / (tot[1]-1))) + "," + str(int(0.5 * vid2height + (orgshape[0] - vid2height) * idx[0] / (tot[0]-1))) + ")" + " ")
             lastcount = i
-    file.close()
+    #file.close()
 if __name__=="__main__":
     a = argparse.ArgumentParser()
     a.add_argument("--vidPath", help="path to video")
