@@ -12,6 +12,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
   b1.addEventListener('click', () => {
     const value = document.querySelector('input[name="mode"]:checked')?.value;
+    const out = document.getElementById("out")
+    out.innerText = '';
     let split = 'False';
     if (value == "Split-screen") {
       split = 'True';
@@ -22,7 +24,6 @@ window.addEventListener('DOMContentLoaded', () => {
     dialog.showOpenDialog({ properties: ['openFile'] }).then((response) => {
       if (response.canceled) return console.log("augh")
       const filePath = response.filePaths
-      const out = document.getElementById("out")
       console.log(filePath[0])
       const extrafile = Math.floor(Math.random() * 4) + 1
 
@@ -38,9 +39,9 @@ window.addEventListener('DOMContentLoaded', () => {
       //   out.innerText += `stderr: ${data}`
       // });
 
-      // python.on('close', (code) => {
-      //   out.innerText += `child process exited with code ${code}`
-      // });
+      python.on('close', (code) => {
+        out.innerText = `output located at ${__dirname}\\richard.mp4`
+      });
     })
   })
   b2.addEventListener('click', () => {
